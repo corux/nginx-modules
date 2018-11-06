@@ -1,4 +1,3 @@
-#
 %define nginx_user nginx
 %define nginx_group nginx
 
@@ -24,7 +23,6 @@ Epoch: %{epoch}
 %endif
 %endif
 
-#define main_version 1.15.5
 %define main_release 1%{?dist}.ngx
 
 %define module_vts_version 0.1.18
