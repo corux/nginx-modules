@@ -6,7 +6,7 @@ install:
   - docker build -t centos-build .
 
 script:
-  - docker run -v "$(pwd):/target" -it centos-build /target/nginx-module-vts.spec 1.14.1 /target/repo/stable
+  - docker run -v "$(pwd):/target" -it centos-build /target/nginx-module-vts.spec 1.14.2 /target/repo/stable
   - docker run -v "$(pwd):/target" -it centos-build /target/nginx-module-vts.spec 1.15.6 /target/repo/mainline
 
 before_deploy:
