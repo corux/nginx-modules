@@ -16,7 +16,7 @@ BuildRequires: redhat-lsb-core
 %define epoch 1
 Epoch: %{epoch}
 %define os_minor %(lsb_release -rs | cut -d '.' -f 2)
-%if %{os_minor} >= 4
+%if %{os_minor} >= 4 && %{lua:print(rpm.vercmp(rpm.expand("%{main_version}"), '1.15.11'))} < 0
 %define dist .el7_4
 %else
 %define dist .el7
