@@ -7,7 +7,7 @@ install:
 
 script:
   - docker run -v "$(pwd):/target" -it centos-build /target/nginx-module-vts.spec 1.16.0 /target/repo/stable
-  - docker run -v "$(pwd):/target" -it centos-build /target/nginx-module-vts.spec 1.17.0 /target/repo/mainline
+  - docker run -v "$(pwd):/target" -it centos-build /target/nginx-module-vts.spec 1.17.1 /target/repo/mainline
 
 before_deploy:
   - mkdir -p gh-pages && curl -L https://github.com/corux/corux.github.io/archive/master.tar.gz | tar xz --strip 1 --directory gh-pages
