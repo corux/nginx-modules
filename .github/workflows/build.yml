@@ -1,0 +1,49 @@
+name: Build and Deploy
+
+on: push
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Build
+        run: |
+          docker build -t centos-build .
+          docker run -v "$(pwd):/target" centos-build /target/nginx-module-vts.spec 1.18.0 /target/repo/stable
+          docker run -v "$(pwd):/target" centos-build /target/nginx-module-vts.spec 1.19.6 /target/repo/mainline
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: repo
+          path: repo/
+
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/master'
+
+    steps:
+      - uses: actions/download-artifact@v2
+        with:
+          name: repo
+          path: repo/
+
+      - name: Prepare deployment
+        run: |
+          mkdir -p gh-pages && curl -L https://github.com/corux/corux.github.io/archive/master.tar.gz | tar xz --strip 1 --directory gh-pages
+          mkdir -p gh-pages/nginx-modules/centos/7 && cp -a repo/stable/* gh-pages/nginx-modules/centos/7/
+          mkdir -p gh-pages/nginx-modules/mainline/centos/7 && cp -a repo/mainline/* gh-pages/nginx-modules/mainline/centos/7/
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          external_repository: corux/corux.github.io
+          publish_branch: master
+          deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
+          publish_dir: ./gh-pages
