@@ -15,7 +15,7 @@ jobs:
         run: |
           docker build -t centos-build .
           docker run -v "$(pwd):/target" centos-build /target/nginx-module-vts.spec 1.18.0 /target/repo/stable
-          docker run -v "$(pwd):/target" centos-build /target/nginx-module-vts.spec 1.19.6 /target/repo/mainline
+          docker run -v "$(pwd):/target" centos-build /target/nginx-module-vts.spec 1.19.8 /target/repo/mainline
 
       - uses: actions/upload-artifact@v2
         with:
